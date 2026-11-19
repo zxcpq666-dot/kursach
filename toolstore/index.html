@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToolStore — Интернет-магазин инструментов и станков</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .page { display: none; }
+    .page.active { display: block; }
+    .nav a.active { color: var(--primary); background: #eff6ff; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <a href="#" class="logo" onclick="showPage('home'); return false;">
+        <div class="logo-icon">T</div>
+        <span>ToolStore</span>
+      </a>
+      <nav class="nav">
+        <a href="#" data-page="home" onclick="showPage('home'); return false;">Главная</a>
+        <a href="#" data-page="catalog" onclick="showPage('catalog'); return false;">Каталог</a>
+        <a href="#" data-page="catalog" onclick="showPage('catalog'); setCategory('Станки'); return false;">Станки</a>
+        <a href="#" data-page="catalog" onclick="showPage('catalog'); setCategory('Электроинструмент'); return false;">Инструмент</a>
+      </nav>
+      <div class="header-actions">
+        <div class="search-box">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          <input type="text" id="search-input" placeholder="Поиск товаров...">
+        </div>
+        <a href="#" class="cart-btn" title="Корзина" onclick="showPage('cart'); return false;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+          </svg>
+          <span class="cart-count" style="display:none">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HOME -->
+  <div id="page-home" class="page active">
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-content">
+          <h1>Инструменты и станки для вашей мастерской</h1>
+          <p>Профессиональное оборудование от ведущих брендов. Доставка по всей России. Гарантия качества.</p>
+          <div class="hero-actions">
+            <a href="#" class="btn btn-primary" onclick="showPage('catalog'); return false;">Смотреть каталог</a>
+            <a href="#" class="btn btn-outline" onclick="showPage('catalog'); setCategory('Станки'); return false;">Станки</a>
+          </div>
+        </div>
+        <div class="hero-image">
+          <img src="https://images.pexels.com/photos/10119311/pexels-photo-10119311.jpeg?auto=compress&cs=tinysrgb&w=500&h=400&fit=crop" alt="Станок">
+        </div>
+      </div>
+    </section>
+    <main class="container">
+      <div class="categories">
+        <a href="#" class="category-card" onclick="showPage('catalog'); setCategory('all'); return false;">
+          <div class="category-icon">🔧</div>
+          <h3>Все товары</h3>
+          <p>Полный каталог</p>
+        </a>
+        <a href="#" class="category-card" onclick="showPage('catalog'); setCategory('Электроинструмент'); return false;">
+          <div class="category-icon">⚡</div>
+          <h3>Электроинструмент</h3>
+          <p>Дрели, болгарки, пилы</p>
+        </a>
+        <a href="#" class="category-card" onclick="showPage('catalog'); setCategory('Станки'); return false;">
+          <div class="category-icon">🏭</div>
+          <h3>Станки</h3>
+          <p>Токарные, фрезерные</p>
+        </a>
+        <a href="#" class="category-card" onclick="showPage('catalog'); setCategory('Ручной инструмент'); return false;">
+          <div class="category-icon">🛠️</div>
+          <h3>Ручной инструмент</h3>
+          <p>Ключи, отвёртки, наборы</p>
+        </a>
+      </div>
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Популярные товары</h2>
+          <a href="#" class="section-link" onclick="showPage('catalog'); return false;">Смотреть всё →</a>
+        </div>
+        <div class="products-grid" id="popular-products"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- CATALOG -->
+  <div id="page-catalog" class="page">
+    <main class="container">
+      <div class="catalog-layout">
+        <aside class="filters">
+          <h3>Фильтры</h3>
+          <div class="filter-group">
+            <h4>Категория</h4>
+            <label class="filter-option"><input type="radio" name="category" value="all" checked onchange="setCategory('all')"> Все товары</label>
+            <label class="filter-option"><input type="radio" name="category" value="Электроинструмент" onchange="setCategory('Электроинструмент')"> Электроинструмент</label>
+            <label class="filter-option"><input type="radio" name="category" value="Станки" onchange="setCategory('Станки')"> Станки</label>
+            <label class="filter-option"><input type="radio" name="category" value="Ручной инструмент" onchange="setCategory('Ручной инструмент')"> Ручной инструмент</label>
+          </div>
+          <div class="filter-group">
+            <h4>Цена до</h4>
+            <div class="price-inputs">
+              <input type="number" id="max-price" value="300000" onchange="setMaxPrice(this.value)">
+              <span>₽</span>
+            </div>
+          </div>
+          <div class="filter-group">
+            <h4>Сортировка</h4>
+            <select class="sort-select" onchange="setSort(this.value)" style="width:100%">
+              <option value="popular">По популярности</option>
+              <option value="price-asc">Сначала дешёвые</option>
+              <option value="price-desc">Сначала дорогие</option>
+              <option value="rating">По рейтингу</option>
+            </select>
+          </div>
+        </aside>
+        <div>
+          <div class="catalog-header">
+            <div>
+              <h1>Каталог</h1>
+              <p class="catalog-count" id="catalog-count">Найдено: 0</p>
+            </div>
+          </div>
+          <div class="products-grid" id="catalog-products"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- CART -->
+  <div id="page-cart" class="page">
+    <main class="container cart-page">
+      <h1>Корзина</h1>
+      <div id="cart-content"></div>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <h3>ToolStore</h3>
+          <p>Интернет-магазин профессионального инструмента и станков для мастерских и производства.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Каталог</h4>
+          <a href="#" onclick="showPage('catalog'); return false;">Все товары</a>
+          <a href="#" onclick="showPage('catalog'); setCategory('Электроинструмент'); return false;">Электроинструмент</a>
+          <a href="#" onclick="showPage('catalog'); setCategory('Станки'); return false;">Станки</a>
+        </div>
+        <div class="footer-col">
+          <h4>Информация</h4>
+          <a href="#">О компании</a>
+          <a href="#">Доставка и оплата</a>
+          <a href="#">Гарантия</a>
+        </div>
+        <div class="footer-col">
+          <h4>Контакты</h4>
+          <a href="tel:+78001234567">8 800 123-45-67</a>
+          <a href="mailto:info@toolstore.ru">info@toolstore.ru</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        © 2026 ToolStore. Курсовой проект — «Разработка клиентской части интернет-магазина инструментов и станков для мастерских»
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/products.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    function showPage(name) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + name).classList.add('active');
+      document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
+      const navLink = document.querySelector('.nav a[data-page="' + name + '"]');
+      if (navLink) navLink.classList.add('active');
+      if (name === 'cart') renderCart();
+      if (name === 'catalog') renderCatalog();
+      if (name === 'home') renderHomeProducts();
+      window.scrollTo(0, 0);
+    }
+  </script>
+</body>
+</html>
